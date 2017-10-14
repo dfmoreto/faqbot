@@ -4,6 +4,7 @@ require "sinatra/activerecord"
 
 require "./config/database"
 
+Dir['./app/models/*.rb'].each { |f| require f }
 
 class App < Sinatra::Base
   get "/" do
