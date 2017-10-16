@@ -13,7 +13,7 @@ services:
     ports:
       - '9292:9292'
     volumes:
-      - '.:/onebitbot'
+      - '.:/faqbot'
     environment:
       - LANG=C.UTF-8
 
