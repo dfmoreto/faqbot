@@ -15,8 +15,20 @@ module FaqModule
         @hashtags.split(/[\s,]+/).each do |hashtag|
           faq.hashtags << Hashtag.create(name: hashtag)
         end
+        identified_urls(@question + @answer).each do |url|
+          faq.links << Link.find_or_create_by(content: url)
+        end
       end
       "Criado com sucesso"
+    end
+
+
+    private
+
+
+    def identified_urls(content)
+      matched = content.scan /(http[s]?:\/\/[\w+\.?]*[\/?\w+]*)\s/
+      matched.flatten
     end
   end
 end

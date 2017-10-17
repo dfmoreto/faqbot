@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171014190421) do
+ActiveRecord::Schema.define(version: 20171017004451) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,13 @@ ActiveRecord::Schema.define(version: 20171014190421) do
     t.integer "hashtag_id"
   end
 
+  create_table "faq_links", force: :cascade do |t|
+    t.bigint "faq_id"
+    t.bigint "link_id"
+    t.index ["faq_id"], name: "index_faq_links_on_faq_id"
+    t.index ["link_id"], name: "index_faq_links_on_link_id"
+  end
+
   create_table "faqs", force: :cascade do |t|
     t.string "question"
     t.string "answer"
@@ -35,4 +42,13 @@ ActiveRecord::Schema.define(version: 20171014190421) do
     t.integer "company_id"
   end
 
+  create_table "links", force: :cascade do |t|
+    t.string "content"
+    t.bigint "company_id"
+    t.index ["company_id"], name: "index_links_on_company_id"
+  end
+
+  add_foreign_key "faq_links", "faqs"
+  add_foreign_key "faq_links", "links"
+  add_foreign_key "links", "companies"
 end

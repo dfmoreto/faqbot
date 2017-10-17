@@ -15,10 +15,15 @@ module FaqModule
         # Deleta as tags associadas que não estejam associadas a outros faqs
         faq.hashtags.each do |h|
           if h.faqs.count <= 1
-            h.delete
+            h.destroy
           end
         end
-        faq.delete
+
+        faq.links.each do |link|
+          link.destroy if link.faqs.count <= 1
+        end
+
+        faq.destroy
         "Deletado com sucesso"
       end
     end

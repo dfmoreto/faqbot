@@ -10,6 +10,9 @@ class Faq < ActiveRecord::Base
   has_many :hashtags, through: :faq_hashtags
   belongs_to :company
 
+  has_many :faq_links, dependent: :destroy
+  has_many :links, through: :faq_links
+
   # include PgSearch
   pg_search_scope :search, against: [:question, :answer]
 end

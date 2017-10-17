@@ -39,5 +39,47 @@ describe FaqModule::CreateService do
       expect(@hashtags.split(/[\s,]+/).first).to match(Hashtag.first.name)
       expect(@hashtags.split(/[\s,]+/).last).to match(Hashtag.last.name)
     end
+
+    context "with links identified in question" do
+      context "if link doesn't exist" do
+        it "adds a new one" do
+          question_with_link = "#{FFaker::Lorem.sentence} #{FFaker::Internet.http_url} blabla"
+          expect {
+            @createService = FaqModule::CreateService.new({'question-original' => question_with_link, 'answer-original' => @answer, 'hashtags-original' => @hashtags})
+            @createService.call
+          }.to change(Link, :count).by(1)
+        end
+
+        it "adds a new association between link and faq" do
+          question_with_link = "#{FFaker::Lorem.sentence} #{FFaker::Internet.http_url} blabla"
+          expect {
+            @createService = FaqModule::CreateService.new({'question-original' => question_with_link, 'answer-original' => @answer, 'hashtags-original' => @hashtags})
+            @createService.call
+          }.to change(FaqLink, :count).by(1)
+        end
+      end
+
+      context "if link exists" do
+        before {
+          @link = create(:link)
+        }
+
+        it "doesn't add a new one" do
+          question_with_link = "#{FFaker::Lorem.sentence} #{@link.content} blabla"
+          expect {
+            @createService = FaqModule::CreateService.new({'question-original' => question_with_link, 'answer-original' => @answer, 'hashtags-original' => @hashtags})
+            @createService.call
+          }.to_not change(Link, :count)
+        end
+
+        it "adds a new association between link and faq" do
+          question_with_link = "#{FFaker::Lorem.sentence} #{@link.content} blabla"
+          expect {
+            @createService = FaqModule::CreateService.new({'question-original' => question_with_link, 'answer-original' => @answer, 'hashtags-original' => @hashtags})
+            @createService.call
+          }.to change(FaqLink, :count).by(1)
+        end
+      end
+    end
   end
 end

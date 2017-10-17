@@ -101,4 +101,16 @@ describe InterpretService do
       expect(response).to match("Questão inválida, verifique o Id")
     end
   end
+
+  describe "#link_links" do
+    it "list links with number of faqs referenced it" do
+      faq = create(:faq, company: @company)
+      link = create(:link, company: @company)
+      create(:faq_link, faq: faq, link: link)
+
+      response = InterpretService.call('list_links', {})
+      expect(response).to match(link.content)
+      expect(response).to match(link.faqs.count.to_s)
+    end
+  end
 end
