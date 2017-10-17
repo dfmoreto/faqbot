@@ -4,7 +4,7 @@ module FaqModule
       @company = Company.last
       response = "*Links Agregados* \n\n"
       Link.where(company: @company).each do |link|
-        response += "*#{link.content}* - "
+        response += "*#{link.content}*\n"
         response += ">Quant. Referencias: #{link.faqs.count}\n"
         response += "\n\n"
       end
