@@ -16,7 +16,7 @@ module FaqModule
           faq.hashtags << Hashtag.create(name: hashtag)
         end
         identified_urls(@question + @answer).each do |url|
-          faq.links << Link.find_or_create_by(content: url)
+          faq.links << Link.find_or_create_by(content: url, company: @company)
         end
       end
       "Criado com sucesso"
