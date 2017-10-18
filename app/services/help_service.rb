@@ -15,9 +15,9 @@ class HelpService
     response += ">Mostra a lista de perguntas e respostas\n\n"
     response += "*Liste links agregados*\n"
     response += ">Lista todos os links que foram mencionados nas perguntas ou respostas dos FAQs\n\n"
-    response += "*Destaque uma questão*\n"
+    response += "*Destaque a questão X*\n"
     response += ">Ao listar as perguntas, as destacadas ficarão com o título diferente\n\n"
-    response += "*Remova o destaque de uma questão*\n"
+    response += "*Remova o destaque da questão X*\n"
     response += ">Remove o destaque feito anteriormente numa questão"
   end
 end
