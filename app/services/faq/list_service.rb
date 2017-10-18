@@ -24,7 +24,7 @@ module FaqModule
       response = "*Perguntas e Respostas* \n\n"
       faqs.each do |f|
         response += "*#{f.id}* - "
-        response += f.highlighted ? "`#{f.question.upcase}`\n" : "*#{f.question}*\n"
+        response += f.highlighted ? "*#{f.question.upcase}*\n" : "#{f.question}\n"
         response += ">#{f.answer}\n"
         f.hashtags.each do |h|
           response += "_##{h.name}_ "
