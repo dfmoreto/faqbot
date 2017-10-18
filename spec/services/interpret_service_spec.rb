@@ -113,4 +113,44 @@ describe InterpretService do
       expect(response).to match(link.faqs.count.to_s)
     end
   end
+
+  describe "#highlight" do
+    it "highlight item if its not highlighted" do
+      faq = create(:faq, company: @company)
+      response = InterpretService.call('highlight', {"id" => faq.id})
+      faq.reload
+      expect(faq.highlighted).to be_truthy
+    end
+
+    it "return an error if item is already highlighted" do
+      faq = create(:faq, highlighted: true, company: @company)
+      response = InterpretService.call('highlight', {"id" => faq.id})
+      expect(response).to match('Este item já está destacado')
+    end
+
+    it "with invalid id, return error message" do
+      response = InterpretService.call('highlight', {"id" => rand(1..9999)})
+      expect(response).to match("Questão inválida, verifique o Id")
+    end
+  end
+
+  describe "#unhighlight" do
+    it "unhighlight item if its highlighted" do
+      faq = create(:faq, highlighted: true, company: @company)
+      response = InterpretService.call('unhighlight', {"id" => faq.id})
+      faq.reload
+      expect(faq.highlighted).to be_falsy
+    end
+
+    it "return an error if item is not highlighted" do
+      faq = create(:faq, highlighted: false, company: @company)
+      response = InterpretService.call('unhighlight', {"id" => faq.id})
+      expect(response).to match('Este item não está destacado')
+    end
+
+    it "with invalid id, return error message" do
+      response = InterpretService.call('unhighlight', {"id" => rand(1..9999)})
+      expect(response).to match("Questão inválida, verifique o Id")
+    end
+  end
 end
